@@ -8,13 +8,156 @@
   <div class='reveal'>
     <div class='slides'>
       <section>
-        and another
+        <h1>Meteor.js</h1>
+        <h3>Building Dynamic Web Apps</h3>
+        <p>
+          <small>
+            <a href='http://chenx.co.za'>Che` Nxusani</a>
+          </small>
+        </p>
+        <p>
+          <small>
+            <a href='http://chenx.co.za'>@code_dependant</a>
+          </small>
+        </p>
+        <p>
+          <small>
+            <a href='http://chenx.co.za'>http://chenx.co.za</a>
+          </small>
+        </p>
       </section>
       <section>
-        Mah slides
+        <h2>About me</h2>
+        <br />
+        <h4>Software Developer</h4>
+        <br />
+        <h6>
+          <small>
+            I use
+          </small>
+          <br />
+          Dgango, Rails, Backbone.js, Meteor.js
+        </h6>
+        <h6>
+          <small>
+            I love
+          </small>
+          <br />
+          Coffeescript, Haml, Sass
+        </h6>
+        <h6>
+          <small>
+            I work
+          </small>
+        </h6>
+        <img src='/images/logo.png' style='background: white;' />
+        <h6>
+          <small>
+            I own
+          </small>
+        </h6>
+        <img src='/images/logo.png' style='background: white;' />
       </section>
       <section>
-        another slide
+        <h2>Why Meteor.js?</h2>
+        <br />
+        <h5>We're building web apps differently</h5>
+        <br />
+        <h5>We need to rethink our approach</h5>
+        <br />
+        <h5>We need fundementally different web frameworks</h5>
+      </section>
+      <section>
+        <h4>The Web</h4>
+        <img src='/images/TheWeb.png' />
+        <br />
+        <br />
+        <br />
+        <div class='fragment'>
+          <h4>The Cloud</h4>
+          <img src='/images/TheCloud.png' />
+        </div>
+      </section>
+      <section>
+        <h2>Work-arounds</h2>
+        <br />
+        <h5>Local Caching</h5>
+        <br />
+        <h5>setInterval Polling</h5>
+        <br />
+        <h5>Change\Events Handlers</h5>
+        <br />
+        <h5>Nested Callbacks</h5>
+      </section>
+      <section>
+        <h2>Our Applications Built the Old Way</h2>
+        <img src='/images/notrobust.gif' />
+      </section>
+      <section>
+        <h2>Some guiding principles</h2>
+        <br />
+        <h5>Pure Javascript, same API's on server and client</h5>
+        <br />
+        <h5>Data over the wire, not HTML</h5>
+        <br />
+        <h5>Real-time communication between server and client</h5>
+        <br />
+        <h5>Responsive & Reactive User Interfaces</h5>
+        <br />
+        <h5>Radically simpler, simplicity == productivity</h5>
+      </section>
+      <section>
+        <h2>Data</h2>
+        <h4>Publish/Subscribe Based</h4>
+        <br />
+        <h6>Server</h6>
+        <pre><code>
+        Posts = new Meteor.Collection('posts')
+        
+        Meteor.publish('all-posts', function(){
+          return Posts.find({public: true})
+        });
+        
+        Meteor.publish('posts-by-author', function(authorId){
+          return Posts.find({public: true, authorId: authorId});
+        });
+        
+        Meteor.publish('my-posts', function(){
+          if(this.userId)
+            return Posts.find({authorId: this.userId});
+        });</code></pre>
+        <h6>Client</h6>
+        <pre><code>
+        Posts = new Meteor.Collection('posts')
+        
+        Meteor.subscribe('all-posts')
+        
+        Meteor.subscribe('posts-by-author', Session.get("authorId"))
+        
+        Meteor.subscribe('my-posts')</code></pre>
+      </section>
+      <section>
+        <h2>Security</h2>
+        <h4>Allow/Deny</h4>
+        <br />
+        <h6>Server</h6>
+        <pre><code>
+        Posts.allow({
+          insert: function(userId, post){
+            if(this.userId) // will be true if user is logged in
+              return true;  // allow the insertion
+            else
+              return false; // do not allow insertion
+          }
+        });
+        Posts.deny({
+          insert: function(userId, post){
+            if(this.userId) // will be true if user is logged in
+              return false;  // do not deny insertion
+            else
+              return true; // deny insertion
+          }
+        });</code></pre>
       </section>
     </div>
   </div>

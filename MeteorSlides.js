@@ -1,8 +1,5 @@
 if (Meteor.isClient) {
 
-
-
-
 Template.t.rendered = function(){
     $("body").append('<script type="text/javascript" src="/reveal.min.js"></script>');
 
@@ -10,11 +7,13 @@ Template.t.rendered = function(){
       controls: true,
       progress: true,
       history: true,
-      center: true
+      center: true,
+      theme: Reveal.getQueryHash().theme,
+      transition: Reveal.getQueryHash().transition || 'default'
     });
 
+    hljs.initHighlightingOnLoad();
   };
-
 
 }
 

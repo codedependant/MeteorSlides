@@ -2,12 +2,162 @@
   %title MeteorSlides
 %body
   {{> t}}
+
 %template{:name => "t"}
   .reveal
     .slides
       %section
-        and another
+        %h1 Meteor.js
+        %h3 Building Dynamic Web Apps
+        %p
+          %small
+            %a{:href => "http://chenx.co.za"} Che` Nxusani
+        %p
+          %small
+            %a{:href => "http://chenx.co.za"} @code_dependant
+        %p
+          %small
+            %a{:href => "http://chenx.co.za"} http://chenx.co.za
+
       %section
-        Mah slides
+        %h2 About me
+        %br
+        %h4 Software Developer
+        %br
+        %h6
+          %small
+            I use
+          %br
+          Dgango, Rails, Backbone.js, Meteor.js
+        %h6
+          %small
+            I love
+          %br
+          Coffeescript, Haml, Sass
+        %h6
+          %small
+            I work
+        %img(src="/images/logo.png" style="background: white;")
+        %h6
+          %small
+            I own
+        %img(src="/images/logo.png" style="background: white;")
+
       %section
-        another slide
+        %h2 Why Meteor.js?
+        %br
+        %h5 We're building web apps differently
+        %br
+        %h5 We need to rethink our approach
+        %br
+        %h5 We need fundementally different web frameworks
+
+      %section
+        %h4 The Web
+        %img(src="/images/TheWeb.png")
+
+        %br
+        %br
+        %br
+        %div.fragment
+          %h4 The Cloud
+          %img(src="/images/TheCloud.png")
+
+      %section
+        %h2 Work-arounds
+
+        %br
+        %h5 Local Caching
+        %br
+        %h5 setInterval Polling
+        %br
+        %h5 Change\Events Handlers
+        %br
+        %h5 Nested Callbacks
+
+      %section
+        %h2 Our Applications Built the Old Way
+        %img(src="/images/notrobust.gif")
+
+      %section
+        %h2 Some guiding principles
+        %br
+        %h5 Pure Javascript, same API's on server and client
+        %br
+        %h5 Data over the wire, not HTML
+        %br
+        %h5 Real-time communication between server and client
+        %br
+        %h5 Responsive & Reactive User Interfaces
+        %br
+        %h5 Radically simpler, simplicity == productivity
+
+
+      %section
+        %h2 Data
+
+        %h4 Publish/Subscribe Based
+        %br
+        %h6 Server
+        %pre
+          %code
+            = find_and_preserve
+            :plain
+              Posts = new Meteor.Collection('posts')
+
+              Meteor.publish('all-posts', function(){
+                return Posts.find({public: true})
+              });
+
+              Meteor.publish('posts-by-author', function(authorId){
+                return Posts.find({public: true, authorId: authorId});
+              });
+
+              Meteor.publish('my-posts', function(){
+                if(this.userId)
+                  return Posts.find({authorId: this.userId});
+              });
+
+        %h6 Client
+        %pre
+          %code
+            = find_and_preserve
+            :plain
+              Posts = new Meteor.Collection('posts')
+
+              Meteor.subscribe('all-posts')
+
+              Meteor.subscribe('posts-by-author', Session.get("authorId"))
+
+              Meteor.subscribe('my-posts')
+
+
+
+      %section
+        %h2 Security
+        %h4 Allow/Deny
+        %br
+        %h6 Server
+
+        %pre
+          %code
+            = find_and_preserve
+            :plain
+
+              Posts.allow({
+                insert: function(userId, post){
+                  if(this.userId) // will be true if user is logged in
+                    return true;  // allow the insertion
+                  else
+                    return false; // do not allow insertion
+                }
+              });
+              Posts.deny({
+                insert: function(userId, post){
+                  if(this.userId) // will be true if user is logged in
+                    return false;  // do not deny insertion
+                  else
+                    return true; // deny insertion
+                }
+              });
+
